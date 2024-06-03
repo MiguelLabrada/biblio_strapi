@@ -14,10 +14,14 @@ module.exports = {
 
     // Set the UUID for our middleware
     const isUserOwnerMiddleware = "global::find-me";
+    const isUserCanUpdateMiddleware = "global::update-me";
 
     // Find the route where we want to inject the middleware
     const findUser = userRoutes.findIndex(
       (route) => route.handler === "user.find" && route.method === "GET"
+    );
+    const updateUser = userRoutes.findIndex(
+      (route) => route.handler === "user.update" && route.method === "PUT"
     );
 
     // helper function that will add the required keys and set them accordingly
@@ -30,6 +34,10 @@ module.exports = {
     if (findUser) {
       initializeRoute(userRoutes, findUser);
       userRoutes[findUser].config.middlewares.push(isUserOwnerMiddleware);
+    }
+    if (updateUser) {
+      initializeRoute(userRoutes, updateUser);
+      userRoutes[updateUser].config.middlewares.push(isUserCanUpdateMiddleware);
     }
 
     // Should see the console log of our modified route
