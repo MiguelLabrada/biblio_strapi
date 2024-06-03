@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "favoritos",
+  "info": {
+    "singularName": "favorito",
+    "pluralName": "favoritos",
+    "displayName": "Favorito"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "libro": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::libro.libro"
+    },
+    "usuario": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}

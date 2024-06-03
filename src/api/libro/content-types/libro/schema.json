@@ -1,0 +1,55 @@
+{
+  "kind": "collectionType",
+  "collectionName": "libros",
+  "info": {
+    "singularName": "libro",
+    "pluralName": "libros",
+    "displayName": "Libro"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "isbn": {
+      "type": "biginteger",
+      "required": true,
+      "unique": true,
+      "min": "9780000000000",
+      "max": "9799999999999"
+    },
+    "portada": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "titulo": {
+      "type": "string",
+      "required": true
+    },
+    "autor": {
+      "type": "string",
+      "required": true
+    },
+    "genero": {
+      "type": "enumeration",
+      "enum": [
+        "Fantasía",
+        "Ciencia Ficción",
+        "Romance",
+        "Misterio",
+        "Aventura",
+        "Biografía",
+        "Historia",
+        "Infantil",
+        "Comic",
+        "Manga"
+      ]
+    },
+    "sinopsis": {
+      "type": "text"
+    }
+  }
+}

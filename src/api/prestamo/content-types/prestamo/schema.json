@@ -1,0 +1,52 @@
+{
+  "kind": "collectionType",
+  "collectionName": "prestamos",
+  "info": {
+    "singularName": "prestamo",
+    "pluralName": "prestamos",
+    "displayName": "Prestamo"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "ejemplar": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::ejemplar.ejemplar"
+    },
+    "usuario": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "estado": {
+      "type": "enumeration",
+      "enum": [
+        "Reservado",
+        "Prestado",
+        "Devuelto"
+      ],
+      "default": "Reservado"
+    },
+    "fecha_lim_reserva": {
+      "type": "date",
+      "required": false,
+      "unique": false
+    },
+    "fecha_prestamo": {
+      "type": "date"
+    },
+    "fecha_lim_prestamo": {
+      "type": "date"
+    },
+    "fecha_devolucion": {
+      "type": "date"
+    },
+    "renovacion_solicitada": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}
