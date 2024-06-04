@@ -14,5 +14,8 @@ module.exports = createCoreRouter('api::favorito.favorito', {
         create: {
             middlewares: ['api::favorito.create-my-favorite'],
         },
+        delete: {
+            middlewares: ['api::favorito.delete-my-favorite'],
+        }
     },
 });
