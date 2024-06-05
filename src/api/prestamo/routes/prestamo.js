@@ -14,5 +14,8 @@ module.exports = createCoreRouter('api::prestamo.prestamo', {
         create: {
             middlewares: ['api::prestamo.create-my-loan'],
         },
+        update: {
+            middlewares: ['api::prestamo.request-renewal'],
+        },
     },
 });
