@@ -11,5 +11,8 @@ module.exports = createCoreRouter('api::prestamo.prestamo', {
         find: {
             middlewares: ['api::prestamo.find-my-loans'],
         },
+        create: {
+            middlewares: ['api::prestamo.create-my-loan'],
+        },
     },
 });
