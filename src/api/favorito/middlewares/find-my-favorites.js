@@ -1,17 +1,12 @@
 'use strict';
 
-/**
- * `find-my-favorites` middleware
- */
-
 module.exports = (config, { strapi }) => {
-  // Add your own logic here.
+  
   return async (ctx, next) => {
-    const userId = ctx.state.user.id;
+    const currentUserId = ctx.state.user.id;
     
-    if (!userId) {
-      strapi.log.error("You are not authenticated.");
-      return ctx.badRequest("You are not authenticated.");
+    if (!currentUserId) {
+      return ctx.unauthorized("You are not authorized to perform this action.");
     }
 
     ctx.query = {
@@ -19,7 +14,7 @@ module.exports = (config, { strapi }) => {
       populate: ["libro"],
       filters: {
         usuario: {
-          id: userId
+          id: currentUserId
         }
       }
     };

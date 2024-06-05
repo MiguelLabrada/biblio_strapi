@@ -1,48 +1,30 @@
 'use strict';
-const _ = require("lodash");
-
-/**
- * `update-me` middleware
- */
 
 module.exports = (config, { strapi }) => {
-  // Add your own logic here.
+  
   return async (ctx, next) => {
-    if (!ctx.state?.user) {
-        strapi.log.error("You are not authenticated.");
-        return ctx.badRequest("You are not authenticated.");
-    }
-
     const requestedUserId = ctx.params?.id;
     const currentUserId = ctx.state?.user?.id;
     const currentUserRoleId = ctx.state?.user?.role.id;
 
-    if (currentUserRoleId == 3) {
-      ctx.request.body = _.pick(ctx.request.body, [
-        "username",
-        "email",
-        "password",
-        "role",
-        "dni",
-        "nombre",
-        "telefono",
-        "domicilio",
-        "bloqueado",
-      ]);
-    } else if (Number(currentUserId) !== Number(requestedUserId)) {
+    if (!currentUserId) {
       return ctx.unauthorized("You are not authorized to perform this action.");
-    } else {
-      ctx.request.body = _.pick(ctx.request.body, [
-        "username",
-        "email",
-        "password",
-        "dni",
-        "nombre",
-        "telefono",
-        "domicilio",
-      ]);
     }
+
+    sanitizeRequestBody(ctx, currentUserRoleId, currentUserId, requestedUserId);
 
     await next();
   };
+
+  function sanitizeRequestBody(ctx, currentUserRoleId, currentUserId, requestedUserId) {
+    if (currentUserRoleId == 3) {
+      const { password, ...newData } = ctx.request.body;
+      ctx.request.body = newData;
+    } else if (currentUserRoleId == 6 && Number(currentUserId) == Number(requestedUserId)) {
+      const { role, bloqueado, ...newData } = ctx.request.body;
+      ctx.request.body = newData;
+    } else {
+      return ctx.throw(403, 'You are not allowed to update this user\'s information');
+    }
+  }
 };
