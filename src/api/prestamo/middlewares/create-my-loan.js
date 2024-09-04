@@ -9,8 +9,15 @@ module.exports = (config, { strapi }) => {
     if (!currentUserId) {
       return ctx.unauthorized("You are not authorized to perform this action.");
     }
+    
+    const loanUsername = ctx.request.body.data.usuario;
+    const usuarios = await getUserId(strapi, loanUsername);
 
-    completeRequestAccordingRole(ctx, currentUserRoleId, currentUserId);
+    if(usuarios.length == 0){
+      return ctx.throw(404, 'User not found.');
+    }
+
+    completeRequestAccordingRole(ctx, currentUserRoleId, currentUserId, usuarios[0].id);
 
     const loanLibroId = ctx.request.body.data.ejemplar;
     try {
@@ -25,18 +32,27 @@ module.exports = (config, { strapi }) => {
     await next();
   };
 
-  function completeRequestAccordingRole(ctx, currentUserRoleId, currentUserId) {
-    const loanUserId = ctx.request.body.data.usuario;
+  async function getUserId(strapi, loanUsername) {
+    return await strapi.entityService.findMany(
+      "plugin::users-permissions.user",
+      {
+          filters: { username: loanUsername },
+      }
+    );
+  }
+
+  function completeRequestAccordingRole(ctx, currentUserRoleId, currentUserId, userId) {
     const now = new Date();
     const futureDate = new Date(now);
 
+    ctx.request.body.data.usuario = userId;
     if (currentUserRoleId == 3) {
       ctx.request.body.data.estado = "Prestado";
       futureDate.setDate(now.getDate() + 3 * 7);
       ctx.request.body.data.fecha_lim_reserva = now;
       ctx.request.body.data.fecha_prestamo = now;
       ctx.request.body.data.fecha_lim_prestamo = futureDate;
-    } else if (currentUserRoleId == 6 && Number(currentUserId) == Number(loanUserId)) {
+    } else if (currentUserRoleId == 6 && Number(currentUserId) == Number(userId)) {
       ctx.request.body.data.estado = "Reservado";
       futureDate.setDate(now.getDate() + 3);
       ctx.request.body.data.fecha_lim_reserva = futureDate;
