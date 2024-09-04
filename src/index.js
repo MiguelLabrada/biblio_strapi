@@ -15,6 +15,7 @@ module.exports = {
     // Set the UUID for our middleware
     const isUserOwnerMiddleware = "global::find-me";
     const isUserCanUpdateMiddleware = "global::update-me";
+    const getUserPendingReturnsMiddleware = "global::findOne-pendingReturns";
 
     // Find the route where we want to inject the middleware
     const findUser = userRoutes.findIndex(
@@ -22,6 +23,10 @@ module.exports = {
     );
     const updateUser = userRoutes.findIndex(
       (route) => route.handler === "user.update" && route.method === "PUT"
+    );
+
+    const findUserPendingReturns = userRoutes.findIndex(
+      (route) => route.handler === "user.findOne" && route.method === "GET"
     );
 
     // helper function that will add the required keys and set them accordingly
@@ -38,6 +43,10 @@ module.exports = {
     if (updateUser) {
       initializeRoute(userRoutes, updateUser);
       userRoutes[updateUser].config.middlewares.push(isUserCanUpdateMiddleware);
+    }
+    if (findUserPendingReturns) {
+      initializeRoute(userRoutes, findUserPendingReturns);
+      userRoutes[findUserPendingReturns].config.middlewares.push(getUserPendingReturnsMiddleware);
     }
 
     // Should see the console log of our modified route
