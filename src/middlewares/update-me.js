@@ -20,8 +20,11 @@ module.exports = (config, { strapi }) => {
     if (currentUserRoleId == 3) {
       const { password, ...newData } = ctx.request.body;
       ctx.request.body = newData;
-    } else if (currentUserRoleId == 6 && Number(currentUserId) == Number(requestedUserId)) {
+    } else if (currentUserRoleId == 5 && Number(currentUserId) == Number(requestedUserId)) {
       const { role, bloqueado, ...newData } = ctx.request.body;
+      ctx.request.body = newData;
+    } else if ((currentUserRoleId == 6 || currentUserRoleId == 4) && Number(currentUserId) == Number(requestedUserId)) {
+      const { role, dnis, ...newData } = ctx.request.body;
       ctx.request.body = newData;
     } else {
       return ctx.throw(403, 'You are not allowed to update this user\'s information');
