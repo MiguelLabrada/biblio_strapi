@@ -14,4 +14,23 @@ module.exports = ({ env }) => ({
         },
       },
     },
+    email: {
+      config: {
+        provider: 'strapi-provider-email-smtp',
+        providerOptions: {
+          host: 'smtp.gmail.com', //SMTP Host
+          port: 465   , //SMTP Port
+          secure: true,
+          username: 'diegocervera24@gmail.com',
+          password: 'hadc aceq gczy aimw',
+          rejectUnauthorized: true,
+          requireTLS: true,
+          connectionTimeout: 1,
+        },
+      },
+      settings: {
+        defaultFrom: 'diegocervera24@gmail.com',
+        defaultReplyTo: 'diegocervera24@gmail.com',
+      }, 
+    },    
   });
