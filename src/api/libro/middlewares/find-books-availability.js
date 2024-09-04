@@ -2,17 +2,25 @@
 
 module.exports = (config, { strapi }) => {
 
+  const removePortadaData = (libro) => {
+    const portadaUrl = libro.attributes.portada.data.attributes.url;
+    libro.attributes.portada = portadaUrl;
+  };
+
   return async (ctx, next) => {
+    ctx.query.populate = '*';
     await next();
 
-    const currentUserRoleId = ctx.state?.user?.role.id;
-
-    if (currentUserRoleId == 3 || currentUserRoleId == 6) {
-      const data = ctx.response.body.data;
+    const data = ctx.response.body.data;
+    if (Array.isArray(data)) {
       for (const libro of data) {
+        removePortadaData(libro);
         await getBookAvailability(strapi, libro);
-      } 
-    }   
+      }
+    } else if (typeof data === 'object' && data !== null) {
+      removePortadaData(data);
+      await getBookAvailability(strapi, data);
+    }
   };
 
   async function getBookAvailability(strapi, libro) {
