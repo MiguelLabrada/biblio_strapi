@@ -11,5 +11,8 @@ module.exports = createCoreRouter('api::libro.libro', {
         find: {
             middlewares: ['api::libro.find-books-availability'],
         },
+        findOne: {
+            middlewares: ['api::libro.find-books-availability'],
+        },
     },
 });
