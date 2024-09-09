@@ -92,3 +92,9 @@ Sigue estos pasos para clonar el repositorio, instalar las dependencias y config
     http://localhost:1337/admin
     ```
     Aquí podrás crear una cuenta de administrador y empezar a gestionar el contenido de la aplicación.
+
+## Cronograma del Proyecto
+
+Para una visión general del cronograma del proyecto, consulta el Diagrama de Gantt a continuación, que detalla la planificación y las fases del desarrollo:
+
+![Diagrama de Gantt](public/diagrama_gantt.png)
